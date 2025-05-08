@@ -20,6 +20,7 @@
     "dev": "node --watch app.js"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "uuid": "^11.1.0"
   }
 }
