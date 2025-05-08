@@ -7,7 +7,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(placesRoutes);
+app.use('/api/places', placesRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => {
