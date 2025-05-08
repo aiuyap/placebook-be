@@ -1,0 +1,25 @@
+{
+  "name": "placebook-be",
+  "version": "1.0.0",
+  "description": "PlaceBook Backend REST API using NodeJS, Express and MongoDB",
+  "homepage": "https://github.com/aiuyap/placebook-be#readme",
+  "bugs": {
+    "url": "https://github.com/aiuyap/placebook-be/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aiuyap/placebook-be.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
