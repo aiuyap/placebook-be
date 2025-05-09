@@ -47,6 +47,12 @@ const signUp = (req, res, next) => {
 };
 
 const login = (req, res, next) => {
+  const validation = validationResult(req);
+
+  if (!validation.isEmpty()) {
+    throw new HttpError('Invalid inputs, please check your data', 422);
+  }
+
   const { email, password } = req.body;
   const loggedInUser = DUMMY_USERS.find(
     (user) => user.email === email && user.password === password
@@ -56,7 +62,7 @@ const login = (req, res, next) => {
     return next(new HttpError('Invalid Username / Password', 404));
   }
 
-  res.status.json({ message: 'Successfully logged in' });
+  res.json({ message: 'Successfully logged in' });
 };
 
 exports.getUsers = getUsers;
