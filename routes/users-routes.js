@@ -7,18 +7,13 @@ const router = Router();
 
 const userSignupValidation = [
   check('name').not().isEmpty(),
-  check('email').isEmail().not().isEmpty(),
-  check('password').isLength({ min: 5 }),
-];
-
-const userLoginValidation = [
-  check('email').isEmail().not().isEmpty(),
+  check('email').normalizeEmail().isEmail(),
   check('password').isLength({ min: 5 }),
 ];
 
 router.get('/', userControllers.getUsers);
 
 router.post('/signup', userSignupValidation, userControllers.signUp);
-router.post('/login', userLoginValidation, userControllers.login);
+router.post('/login', userControllers.login);
 
 module.exports = router;
