@@ -16,7 +16,7 @@ router.get('/user/:uid', placesController.getPlacesByUserId);
 
 router.post('/', placeValidation, placesController.createPlace);
 
-router.patch('/:pid', placesController.updatePlace);
+router.patch('/:pid', placeValidation, placesController.updatePlace);
 
 router.delete('/:pid', placesController.deletePlace);
 
