@@ -31,7 +31,20 @@ const signUp = (req, res, next) => {
   res.status(201).json({ message: 'Successfully signed up' });
 };
 
-const login = (req, res, next) => {};
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+  const loggedInUser = DUMMY_USERS.find((user) => {
+    if (user.email === email && user.password === password) {
+      return user;
+    }
+  });
+
+  if (!loggedInUser) {
+    return res.status(404).json({ message: 'Invalid Username / Password' });
+  }
+
+  res.status(200).json({ message: 'Successfully logged in' });
+};
 
 exports.getUsers = getUsers;
 exports.signUp = signUp;
