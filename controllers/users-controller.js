@@ -20,6 +20,13 @@ const getUsers = (req, res, next) => {
 
 const signUp = (req, res, next) => {
   const { name, email, password } = req.body;
+
+  const existingUser = DUMMY_USERS.find((user) => user.email === email);
+
+  if (existingUser) {
+    return next(new HttpError('Email already exists', 422));
+  }
+
   const createdUser = {
     id: uuid(),
     name,
