@@ -28,22 +28,20 @@ const signUp = (req, res, next) => {
   };
   DUMMY_USERS.push(createdUser);
 
-  res.status(201).json({ message: 'Successfully signed up' });
+  res.status(201).json({ user: createdUser });
 };
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-  const loggedInUser = DUMMY_USERS.find((user) => {
-    if (user.email === email && user.password === password) {
-      return user;
-    }
-  });
+  const loggedInUser = DUMMY_USERS.find(
+    (user) => user.email === email && user.password === password
+  );
 
   if (!loggedInUser) {
-    return res.status(404).json({ message: 'Invalid Username / Password' });
+    return next(new HttpError('Invalid Username / Password', 404));
   }
 
-  res.status(200).json({ message: 'Successfully logged in' });
+  res.status.json({ message: 'Successfully logged in' });
 };
 
 exports.getUsers = getUsers;
