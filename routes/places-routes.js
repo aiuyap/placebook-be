@@ -11,12 +11,17 @@ const placeValidation = [
   check('address').not().isEmpty(),
 ];
 
+const updateValidation = [
+  check('title').not().isEmpty(),
+  check('description').isLength({ min: 5 }),
+];
+
 router.get('/:pid', placesController.getPlaceById);
 router.get('/user/:uid', placesController.getPlacesByUserId);
 
 router.post('/', placeValidation, placesController.createPlace);
 
-router.patch('/:pid', placeValidation, placesController.updatePlace);
+router.patch('/:pid', updateValidation, placesController.updatePlace);
 
 router.delete('/:pid', placesController.deletePlace);
 
