@@ -3,6 +3,7 @@ const { validationResult } = require('express-validator');
 
 const HttpError = require('../models/http-error');
 const getCoordsForAddress = require('../util/location');
+const Place = require('../models/place-schema');
 
 let DUMMY_PLACES = [
   {
@@ -44,7 +45,7 @@ const getPlacesByUserId = (req, res, next) => {
   res.json({ places });
 };
 
-const createPlace = (req, res, next) => {
+const createPlace = async (req, res, next) => {
   const validation = validationResult(req);
   if (!validation.isEmpty()) {
     throw new HttpError('Invalid inputs, please check your data', 422);
@@ -54,16 +55,21 @@ const createPlace = (req, res, next) => {
 
   const coordinates = getCoordsForAddress(address);
 
-  const createdPlace = {
-    id: uuid(),
+  const createdPlace = new Place({
     title,
     description,
-    location: coordinates,
     address,
+    location: coordinates,
+    image:
+      'https://assets.simpleviewinc.com/simpleview/image/upload/crm/newyorkstate/GettyImages-486334510_CC36FC20-0DCE-7408-77C72CD93ED4A476-cc36f9e70fc9b45_cc36fc73-07dd-b6b3-09b619cd4694393e.jpg',
     creator,
-  };
+  });
 
-  DUMMY_PLACES.push(createdPlace);
+  await createdPlace
+    .save()
+    .catch((err) =>
+      next(new HttpError('Creating place failed, please try again', 500))
+    );
 
   res.status(201).json({ place: createdPlace });
 };
