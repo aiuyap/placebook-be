@@ -39,4 +39,6 @@ mongoose
       console.log(`Server running on PORT http://localhost:${PORT}!`);
     });
   })
-  .catch();
+  .catch((err) => {
+    console.error(err);
+  });
