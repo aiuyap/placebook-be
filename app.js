@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 
 const placesRoutes = require('./routes/places-routes');
 const usersRoutes = require('./routes/users-routes');
@@ -27,7 +28,15 @@ app.use((err, req, res, next) => {
     .json({ message: err.message || 'Internal Server Error' });
 });
 
+const url = process.env.DB_URL;
+
 const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on PORT http://localhost:${PORT}!`);
-});
+console.log('Connecting to database...');
+mongoose
+  .connect(url)
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on PORT http://localhost:${PORT}!`);
+    });
+  })
+  .catch();
