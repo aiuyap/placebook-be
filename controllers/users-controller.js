@@ -30,7 +30,7 @@ const signUp = async (req, res, next) => {
     next(new HttpError('Invalid inputs, please check your data', 422));
   }
 
-  const { name, email, password, places } = req.body;
+  const { name, email, password } = req.body;
 
   const existingUser = await User.findOne({ email }).catch((err) =>
     next(new HttpError('Sign up failed, please try again', 500))
@@ -46,7 +46,7 @@ const signUp = async (req, res, next) => {
     image:
       'https://images.pexels.com/photos/7046685/pexels-photo-7046685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     password,
-    places,
+    places: [],
   });
 
   await createdUser
