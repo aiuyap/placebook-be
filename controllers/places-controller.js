@@ -73,7 +73,7 @@ const createPlace = async (req, res, next) => {
 
   try {
     const sess = await mongoose.startSession();
-    sess.startTransaction();
+    await sess.startTransaction();
     await createdPlace.save({ session: sess });
     user.places.push(createdPlace);
     await user.save({ session: sess });
@@ -116,12 +116,32 @@ const updatePlace = async (req, res, next) => {
 const deletePlace = async (req, res, next) => {
   const placeId = req.params.pid;
 
-  const deletePlace = await Place.findByIdAndDelete(placeId).catch((err) =>
-    next(new HttpError('Something went wrong. Deletion unsuccessful', 500))
-  );
+  let deletePlace;
+
+  try {
+    deletePlace = await Place.findById(placeId).populate('creator');
+  } catch (error) {
+    return next(
+      new HttpError('Error in deleting place, please try again later', 500)
+    );
+  }
 
   if (!deletePlace) {
     return next(new HttpError('Place does not exist', 404));
+  }
+
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await deletePlace.deleteOne({ session: sess }).exec();
+    deletePlace.creator.places.pull(deletePlace);
+    await deletePlace.creator.save({ session: sess });
+    await sess.commitTransaction();
+  } catch (error) {
+    console.log(error);
+    return next(
+      new HttpError('Error in deleting place, please try again later', 500)
+    );
   }
 
   res.json({ message: `Successfully deleted place id: ${placeId}` });
